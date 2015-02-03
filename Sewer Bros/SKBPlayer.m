@@ -28,8 +28,8 @@
     //physics
     player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:player.size];
     player.physicsBody.categoryBitMask = kPlayerCategory;
-    player.physicsBody.contactTestBitMask = kWallCategory | kLedgeCategory | kCoinCategory;
-    player.physicsBody.collisionBitMask = kBaseCategory | kWallCategory | kLedgeCategory;
+    player.physicsBody.contactTestBitMask = kWallCategory | kLedgeCategory | kCoinCategory | kRatzCategory ;
+    player.physicsBody.collisionBitMask = kBaseCategory | kWallCategory | kLedgeCategory | kRatzCategory;
     player.physicsBody.density = 1.0;
     player.physicsBody.linearDamping = 0.1;
     player.physicsBody.restitution = 0.2;
@@ -48,6 +48,8 @@
     
     // Sounds
     _spawnSound = [SKAction playSoundFileNamed:kPlayerSpawnSoundFileName waitForCompletion:NO];
+    _splashSound = [SKAction playSoundFileNamed:kPlayerSplashedSoundFileName waitForCompletion:NO];
+    _bittenSound = [SKAction playSoundFileNamed:kPlayerBittenSoundFileName waitForCompletion:NO];
     _runSound   = [SKAction playSoundFileNamed:kPlayerRunSoundFileName waitForCompletion:YES];
     _jumpSound  = [SKAction playSoundFileNamed:kPlayerJumpSoundFileName waitForCompletion:NO];
     _skidSound  = [SKAction playSoundFileNamed:kPlayerSkidSoundFileName waitForCompletion:YES];
@@ -64,6 +66,53 @@
     self.physicsBody = nil;
     self.position = where;
     self.physicsBody = storePB;
+}
+
+#pragma mark Contact
+- (void)playerKilled:(SKScene *)whichScene
+{
+    NSLog(@"Player has died...");
+    [self removeAllActions];
+    
+    // Update status
+    _playerStatus = SBPlayerFalling;
+    
+    [whichScene runAction:_bittenSound];
+    
+    // upward impulse applied
+    [self.physicsBody applyImpulse:CGVectorMake(0, kPlayerBittenIncrement)];
+    
+    // While flying upward, wait for a short spell before altering physicsBody
+    SKAction *shortDelay = [SKAction waitForDuration:0.5];
+    
+    [self runAction:shortDelay completion:^{
+        // Make a new physics body that is much, much smaller as
+        //to not affect ledges as he falls...
+        self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(1,1)];
+        self.physicsBody.categoryBitMask = kPlayerCategory;
+        self.physicsBody.collisionBitMask = kWallCategory;
+        self.physicsBody.contactTestBitMask = kWallCategory;
+        self.physicsBody.linearDamping = 1.0;
+        self.physicsBody.allowsRotation = NO;
+    }];
+}
+
+- (void)playerHitWater:(SKScene *)whichScene
+{
+    NSLog(@"Player has fallen and hit the water...");
+    [whichScene runAction:_splashSound];
+    
+    // splash eye candy
+    NSString *emitterPath = [[NSBundle mainBundle] pathForResource:@"Splashed" ofType:@"sks"];
+    SKEmitterNode *splash = [NSKeyedUnarchiver unarchiveObjectWithFile:emitterPath];
+    splash.position = self.position;
+    
+    //NSLog(@"splash (%f,%f)", splash.position.x, splash.position.y);
+    splash.name = @"playerSplash";
+    splash.targetNode = whichScene.scene;
+    [whichScene addChild:splash];
+    
+    [self removeFromParent];
 }
 
 #pragma mark Movement

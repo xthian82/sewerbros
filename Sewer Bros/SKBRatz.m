@@ -23,7 +23,7 @@
     ratz.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:ratz.size];
     ratz.physicsBody.categoryBitMask = kRatzCategory;
     ratz.physicsBody.contactTestBitMask = kBaseCategory | kWallCategory | kLedgeCategory | kPipeCategory | kRatzCategory | kCoinCategory;
-    ratz.physicsBody.collisionBitMask = kBaseCategory | kWallCategory | kLedgeCategory | kRatzCategory | kCoinCategory;
+    ratz.physicsBody.collisionBitMask = kBaseCategory | kWallCategory | kLedgeCategory | kPlayerCategory | kRatzCategory | kCoinCategory;
     ratz.physicsBody.density = 1.0;
     ratz.physicsBody.linearDamping = 0.1;
     ratz.physicsBody.restitution = 0.2;
@@ -41,7 +41,14 @@
     _spriteTextures = gameScene.spriteTextures;
     
     // Sound Effects
+    _koSound = [SKAction playSoundFileNamed:kRatzKOSoundFileName waitForCompletion:NO];
+    
+    _collectedSound = [SKAction playSoundFileNamed:kRatzCollectedSoundFileName waitForCompletion:NO];
+    
     _spawnSound = [SKAction playSoundFileNamed:kRatzSpawnSoundFileName waitForCompletion:NO];
+    
+    _splashSound = [SKAction playSoundFileNamed:kRatzSplashedSoundFileName waitForCompletion:NO];
+    
     [self runAction:_spawnSound];
     
     if (self.position.x < CGRectGetMidX(gameScene.frame))
@@ -74,7 +81,7 @@
     [self runRight];
     
     //Play spawning sound
-    [self runAction:self.spawnSound];
+    [whichScene runAction:self.spawnSound];
 }
 
 - (void)hitRightPipe:(SKScene *)whichScene
@@ -91,7 +98,7 @@
     [self runLeft];
     
     //Play spawning sound
-    [self runAction:self.spawnSound];
+    [whichScene runAction:self.spawnSound];
 }
 
 #pragma mark Contact
@@ -118,6 +125,71 @@
             [self runRight];
         }
     }];
+}
+
+- (void)ratzCollected:(SKScene *)whichScene
+{
+    NSLog(@"%@ collected", self.name);
+    _ratzStatus = SBRatzKicked;
+    
+    //play sound
+    [whichScene runAction:_collectedSound];
+    
+    // show amount of winnings
+    SKLabelNode *moneyText = [SKLabelNode labelNodeWithFontNamed:@"Courier-Bold"];
+    moneyText.text = [NSString stringWithFormat:@"$%d", kRatzPointValue];
+    moneyText.fontSize = 9;
+    moneyText.fontColor = [SKColor whiteColor];
+    moneyText.position = CGPointMake(self.position.x-10, self.position.y+28);
+    [whichScene addChild:moneyText];
+    
+    //disappear the text
+    SKAction *fadeAway = [SKAction fadeOutWithDuration:1];
+    [moneyText runAction:fadeAway completion:^{ [moneyText removeFromParent]; }];
+    
+    //disappear the ratz
+    // upward impulse applied
+    [self.physicsBody applyImpulse:CGVectorMake(0, kRatzKickedIncrement)];
+    
+    // Make him spin when kicked
+    SKAction *rotation = [SKAction rotateByAngle:M_PI duration:0.1];
+    // 2*pi = 360deg, pi = 180deg
+    SKAction *rotateForever = [SKAction repeatActionForever:rotation];
+    [self runAction:rotateForever];
+    
+    // While kicked upward and spinning, wait for a short
+    //spell before altering physicsBody
+    SKAction *shortDelay = [SKAction waitForDuration:0.5];
+    [self runAction:shortDelay completion:^{
+        // Make a new physics body that is much, much smaller as to not affect
+        //ledges as he falls...
+        self.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(1,1)];
+        self.physicsBody.categoryBitMask = kRatzCategory;
+        self.physicsBody.collisionBitMask = kWallCategory;
+        self.physicsBody.contactTestBitMask = kWallCategory;
+        self.physicsBody.linearDamping = 1.0;
+        self.physicsBody.allowsRotation = YES;
+    }];
+}
+
+- (void)ratzHitWater:(SKScene *)whichScene
+{
+    // Play sound
+    [whichScene runAction:_splashSound];
+    
+    // splash eye candy
+    NSString *emitterPath = [[NSBundle mainBundle] pathForResource:@"Splashed" ofType:@"sks"];
+    SKEmitterNode *splash = [NSKeyedUnarchiver unarchiveObjectWithFile:emitterPath];
+    
+    splash.position = self.position;
+    NSLog(@"splash (%f,%f)", splash.position.x, splash.position.y);
+    
+    splash.name = @"ratzSplash";
+    splash.targetNode = whichScene.scene;
+    [whichScene addChild:splash];
+    
+    NSLog(@"%@ hit bottom of screen and is being removed", self.name);
+    [self removeFromParent];
 }
 
 #pragma mark Movement

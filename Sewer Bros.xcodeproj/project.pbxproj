@@ -17,6 +17,11 @@
 		393E29FC1A596CEC00D62A05 /* Ratz_KO_R_Hit2.png in Resources */ = {isa = PBXBuildFile; fileRef = 393E29F21A596CEC00D62A05 /* Ratz_KO_R_Hit2.png */; };
 		393E29FD1A596CEC00D62A05 /* Ratz_KO_L_Hit5.png in Resources */ = {isa = PBXBuildFile; fileRef = 393E29F31A596CEC00D62A05 /* Ratz_KO_L_Hit5.png */; };
 		393E29FE1A596CEC00D62A05 /* Ratz_KO_R_Hit5.png in Resources */ = {isa = PBXBuildFile; fileRef = 393E29F41A596CEC00D62A05 /* Ratz_KO_R_Hit5.png */; };
+		39505BF51A7EB402000886D5 /* Playerbitten.caf in Resources */ = {isa = PBXBuildFile; fileRef = 39505BF21A7EB402000886D5 /* Playerbitten.caf */; };
+		39505BF61A7EB402000886D5 /* EnemyKO.caf in Resources */ = {isa = PBXBuildFile; fileRef = 39505BF31A7EB402000886D5 /* EnemyKO.caf */; };
+		39505BF71A7EB402000886D5 /* EnemyCollected.caf in Resources */ = {isa = PBXBuildFile; fileRef = 39505BF41A7EB402000886D5 /* EnemyCollected.caf */; };
+		39505BF91A7ECDE1000886D5 /* Splashed.sks in Resources */ = {isa = PBXBuildFile; fileRef = 39505BF81A7ECDE1000886D5 /* Splashed.sks */; };
+		39505BFC1A7EE741000886D5 /* Splash.caf in Resources */ = {isa = PBXBuildFile; fileRef = 39505BFB1A7EE741000886D5 /* Splash.caf */; };
 		396BAB7A1A5591C70031D602 /* CastOfCharacters.plist in Resources */ = {isa = PBXBuildFile; fileRef = 396BAB791A5591C70031D602 /* CastOfCharacters.plist */; };
 		396BAB871A55CDA60031D602 /* Text_PlayerScoreHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 396BAB7C1A55CDA60031D602 /* Text_PlayerScoreHeader.png */; };
 		396BAB881A55CDA60031D602 /* Text_Number_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 396BAB7D1A55CDA60031D602 /* Text_Number_1.png */; };
@@ -114,6 +119,11 @@
 		393E29F21A596CEC00D62A05 /* Ratz_KO_R_Hit2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ratz_KO_R_Hit2.png; sourceTree = "<group>"; };
 		393E29F31A596CEC00D62A05 /* Ratz_KO_L_Hit5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ratz_KO_L_Hit5.png; sourceTree = "<group>"; };
 		393E29F41A596CEC00D62A05 /* Ratz_KO_R_Hit5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ratz_KO_R_Hit5.png; sourceTree = "<group>"; };
+		39505BF21A7EB402000886D5 /* Playerbitten.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Playerbitten.caf; sourceTree = "<group>"; };
+		39505BF31A7EB402000886D5 /* EnemyKO.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EnemyKO.caf; sourceTree = "<group>"; };
+		39505BF41A7EB402000886D5 /* EnemyCollected.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EnemyCollected.caf; sourceTree = "<group>"; };
+		39505BF81A7ECDE1000886D5 /* Splashed.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Splashed.sks; sourceTree = "<group>"; };
+		39505BFB1A7EE741000886D5 /* Splash.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Splash.caf; sourceTree = "<group>"; };
 		396BAB791A5591C70031D602 /* CastOfCharacters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CastOfCharacters.plist; sourceTree = "<group>"; };
 		396BAB7C1A55CDA60031D602 /* Text_PlayerScoreHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Text_PlayerScoreHeader.png; sourceTree = "<group>"; };
 		396BAB7D1A55CDA60031D602 /* Text_Number_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Text_Number_1.png; sourceTree = "<group>"; };
@@ -243,6 +253,10 @@
 		396BAB951A561A6E0031D602 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				39505BFB1A7EE741000886D5 /* Splash.caf */,
+				39505BF21A7EB402000886D5 /* Playerbitten.caf */,
+				39505BF31A7EB402000886D5 /* EnemyKO.caf */,
+				39505BF41A7EB402000886D5 /* EnemyCollected.caf */,
 				398FE9D31A586EEE00A51DEC /* CoinCollected.caf */,
 				396BAB961A561AA20031D602 /* Run.caf */,
 				396BAB971A561AA20031D602 /* SpawnEnemy.caf */,
@@ -312,6 +326,7 @@
 			children = (
 				398FE9D51A587E2600A51DEC /* CoinCollected.sks */,
 				398FE9D61A587E2600A51DEC /* spark.png */,
+				39505BF81A7ECDE1000886D5 /* Splashed.sks */,
 			);
 			name = Emitters;
 			sourceTree = "<group>";
@@ -511,7 +526,10 @@
 				396BAB8C1A55CDA60031D602 /* Text_Number_7.png in Resources */,
 				39AF6E321A50DB1400A4046A /* Ratz_Right2.png in Resources */,
 				398FE9D71A587E2600A51DEC /* CoinCollected.sks in Resources */,
+				39505BF51A7EB402000886D5 /* Playerbitten.caf in Resources */,
 				39AF6E311A50DB1400A4046A /* Ratz_Right3.png in Resources */,
+				39505BF91A7ECDE1000886D5 /* Splashed.sks in Resources */,
+				39505BF61A7EB402000886D5 /* EnemyKO.caf in Resources */,
 				39A0C97A1A4F42CD00CBF269 /* Player_LeftJump.png in Resources */,
 				393E29FD1A596CEC00D62A05 /* Ratz_KO_L_Hit5.png in Resources */,
 				39AF6E381A50DB1400A4046A /* Ratz_Left1.png in Resources */,
@@ -542,10 +560,12 @@
 				397B510B1A4C4C5800435319 /* Player_RightSkid.png in Resources */,
 				393E29F71A596CEC00D62A05 /* Ratz_KO_L_Hit4.png in Resources */,
 				398FE9D81A587E2600A51DEC /* spark.png in Resources */,
+				39505BF71A7EB402000886D5 /* EnemyCollected.caf in Resources */,
 				3989CFEE1A479EF40099C847 /* Player_Right_Still.png in Resources */,
 				397B510F1A4CB78B00435319 /* Backdrop_568.png in Resources */,
 				397B510C1A4C4C5800435319 /* Player_LeftSkid.png in Resources */,
 				396BAB8E1A55CDA60031D602 /* Text_Number_4.png in Resources */,
+				39505BFC1A7EE741000886D5 /* Splash.caf in Resources */,
 				39C2D8321A46062B00E31946 /* SewerSplash_568.png in Resources */,
 				39A0C9791A4F42CD00CBF269 /* Player_RightJump.png in Resources */,
 				39AF6E2F1A50DB1400A4046A /* Ratz_Right5.png in Resources */,
